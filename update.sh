@@ -1,21 +1,38 @@
 #!/bin/sh
-#
 # Script for updating DDNS record on Namecheap.
 # Author: Alex Tsang <alextsang@live.com>
 # License: The BSD 3-Clause License
 
-# Configurations.
-DOMAIN=DOMAIN-NAME.com
-PASSWORD=DDNS-UPDATE-PASSWORD
-HOST=@
-LOG=$(cd $(dirname $0); pwd)/ddns.log
+# Strict mode.
+set -e
+set -u
+IFS='\n\t'
 
-# API URL. Do not change.
+SCRIPT_DIR="$(cd "$(dirname "$0")"; pwd)"
+
 API_URL="https://dynamicdns.park-your-domain.com/update"
 
-url="${API_URL}?domain=${DOMAIN}&password=${PASSWORD}&host=${HOST}"
+# Configurations.
+#
+# DOMAIN: Domain name.
+# PASSWORD: Dynamic DNS password.
+# HOST: Host.
+# LOG: Log file.
+domain='example.com'
+password='password'
+host="@"
+log="${SCRIPT_DIR}"/ddns.log
 
-echo `date "+%Y%m%d-%H%M%S"` >> ${LOG}
+url="${API_URL}?domain=${domain}&password=${password}&host=${host}"
+
+# Log update time.
+date -u '+%Y-%m-%dT%H:%M:%SZ' >> "${log}"
+
 # Disable curl's progress meter.
-curl -s ${url} >> ${LOG}
-echo "" >> ${LOG}
+# Allow curl to exit with non-zero exit code.
+set +e
+curl -s "${url}" >> "${log}"
+set -e
+
+# New line.
+echo '' >> "${log}"
