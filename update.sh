@@ -14,10 +14,10 @@ API_URL="https://dynamicdns.park-your-domain.com/update"
 
 # Configurations.
 #
-# DOMAIN: Domain name.
-# PASSWORD: Dynamic DNS password.
-# HOST: Host.
-# LOG: Log file.
+# domain: Domain name.
+# password: Dynamic DNS password.
+# host: Host.
+# log: Log file.
 domain='example.com'
 password='password'
 host="@"
