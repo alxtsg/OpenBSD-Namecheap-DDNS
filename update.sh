@@ -1,7 +1,7 @@
 #!/bin/sh
 # Script for updating DDNS record on Namecheap.
 # Author: Alex Tsang <alextsang@live.com>
-# License: The BSD 3-Clause License
+# License: The 3-Clause BSD License
 
 # Strict mode.
 set -e
@@ -25,14 +25,17 @@ log="${SCRIPT_DIR}"/ddns.log
 
 url="${API_URL}?domain=${domain}&password=${password}&host=${host}"
 
-# Log update time.
-date -u '+%Y-%m-%dT%H:%M:%SZ' >> "${log}"
+cd "${SCRIPT_DIR}"
 
-# Disable curl's progress meter.
-# Allow curl to exit with non-zero exit code.
-set +e
-curl -s "${url}" >> "${log}"
-set -e
+{
+  # Log update time.
+  date -u '+%Y-%m-%dT%H:%M:%SZ'
 
-# New line.
-echo '' >> "${log}"
+  # -M: Disable progress meter.
+  # -o -: Set stdout as output.
+  # -U '': Remove default value of HTTP request header User-Agent.
+  ftp -M -o - -U '' "${url}"
+
+  # New line.
+  echo ''
+} >> "${log}"

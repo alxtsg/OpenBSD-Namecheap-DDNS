@@ -2,11 +2,11 @@
 
 ## Description ##
 
-Small script for updating DDNS record on Namecheap, written for use on OpenBSD.
+A small script for updating DDNS record on Namecheap. Written for use on OpenBSD.
 
 ## Requirements ##
 
-* curl (`7.53.1`; the pre-compiled package on OpenBSD is fine).
+* (None.)
 
 ## Installation ##
 
@@ -29,4 +29,4 @@ A cron job can be setup to run the script periodically. For example, add a cron 
 
 ## License ##
 
-[The BSD 3-Clause License](http://opensource.org/licenses/BSD-3-Clause)
+[The 3-Clause BSD License](http://opensource.org/licenses/BSD-3-Clause)
