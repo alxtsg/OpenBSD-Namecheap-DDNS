@@ -1,41 +1,46 @@
 #!/bin/sh
-# Script for updating DDNS record on Namecheap.
+#
+# Script for updating DNS records on Namecheap.
 # Author: Alex Tsang <alextsang@live.com>
 # License: The 3-Clause BSD License
 
 # Strict mode.
 set -e
 set -u
-IFS='\n\t'
 
-SCRIPT_DIR="$(cd "$(dirname "$0")"; pwd)"
+scriptDirectory="$(cd "$(dirname "$0")"; pwd)"
+domainsDirectory="${scriptDirectory}/configs"
+logsDirectory="${scriptDirectory}/logs"
 
-API_URL="https://dynamicdns.park-your-domain.com/update"
+apiURL="https://dynamicdns.park-your-domain.com/update"
 
-# Configurations.
-#
-# domain: Domain name.
-# password: Dynamic DNS password.
-# host: Host.
-# log: Log file.
-domain='example.com'
-password='password'
-host="@"
-log="${SCRIPT_DIR}"/ddns.log
+configurations=$(ls "${domainsDirectory}")
+for configuration in ${configurations}; do
+  filePath="${domainsDirectory}/${configuration}"
+  # Ignore anything other than regular files, such as directories.
+  if [ ! -f "${filePath}" ]; then
+    continue
+  fi
 
-url="${API_URL}?domain=${domain}&password=${password}&host=${host}"
+  domain=
+  password=
+  host=
+  log=
 
-cd "${SCRIPT_DIR}"
+  . "${filePath}"
 
-{
-  # Log update time.
-  date -u '+%Y-%m-%dT%H:%M:%SZ'
+  url="${apiURL}?domain=${domain}&password=${password}&host=${host}"
 
-  # -M: Disable progress meter.
-  # -o -: Set stdout as output.
-  # -U '': Remove default value of HTTP request header User-Agent.
-  ftp -M -o - -U '' "${url}"
+  (
+    # Log update time.
+    date -u '+%Y-%m-%dT%H:%M:%SZ'
 
-  # New line.
-  echo ''
-} >> "${log}"
+    # -M: Disable progress meter.
+    # -o -: Set stdout as output.
+    # -U '': Remove default value of HTTP request header User-Agent.
+    ftp -M -o - -U '' "${url}"
+
+    # New line.
+    echo ''
+  ) >> "${logsDirectory}/${log}"
+done

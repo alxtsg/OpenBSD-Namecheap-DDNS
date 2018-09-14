@@ -2,7 +2,8 @@
 
 ## Description ##
 
-A small script for updating DDNS record on Namecheap. Written for use on OpenBSD.
+A small script for updating DNS records on Namecheap. Written for use on
+OpenBSD.
 
 ## Requirements ##
 
@@ -11,21 +12,26 @@ A small script for updating DDNS record on Namecheap. Written for use on OpenBSD
 ## Installation ##
 
 0. Download the script.
-1. Update configurations in the script.
+1. Add configuration files in the `configs` directory.
 
 ## Usage ##
 
-There are a number of configurations should be updated before using:
+Each configuration file in the `configs` directory should be a regular,
+readable, non-hidden file, and contains the following properties:
 
 * `domain`: Domain name.
-* `password`: Dynamic DNS password.
-* `host`: Host. `@` for the domain itself.
-* `log`: Log file. Default to ddns.log placed next to the script.
+* `password`: Password for updating the DNS record using the Dynamic DNS feature
+provided by Namecheap.
+* `host`: Host. Use `@` for the domain itself.
+* `log`: Log filename. The log file is put under the `logs` directory.
 
-A cron job can be setup to run the script periodically. For example, add a cron job by `crontab -e`:
+A file `.example.com.config` is put under the `configs` as an example.
+
+A cron job can be setup to run the script periodically. For example, add a cron
+job by `crontab -e`:
 
     # Run the script located at /path/to/update.sh every 1 hour.
-    0 * * * * /path/to/update.sh
+    0 * * * * /bin/sh /path/to/update.sh
 
 ## License ##
 
