@@ -5,6 +5,8 @@
 A small script for updating DNS records on Namecheap. Written for use on
 OpenBSD.
 
+**This application is no longer being maintained.**
+
 ## Requirements ##
 
 * (None.)
